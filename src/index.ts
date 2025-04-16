@@ -1,5 +1,7 @@
 export default {
   async fetch(request, env) {
+    console.log(request);
+    
     const inputs = {
       prompt: "cyberpunk cat",
     };
