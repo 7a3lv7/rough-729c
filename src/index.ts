@@ -1,9 +1,21 @@
 export default {
   async fetch(request, env) {
-    if (request.method !== "POST") {
-      return new Response("This request is not supported", { status: 405, headers: { Allow: "POST" } });
+    let inputs: AiTextToImageInput;
+    if (request.method == "GET") {
+      const url = new URL(request.url);
+        let prompt = url.searchParams.get("prompt");
+
+        if (!prompt) {
+          prompt = "A cat."
+        }
+
+        inputs = { prompt };
+    }else if (request.method === "POST") {
+      // Handle POST: Parse JSON body
+      inputs = await request.json() as AiTextToImageInput;
+    }else{
+      return new Response("this request is not support", { status: 405, headers: { Allow: "GET, POST" } });
     }
-    const inputs = await request.json() as AiTextToImageInput;
     if (!inputs.prompt) {
       return new Response("missing prompt", { status: 400 });
     }
