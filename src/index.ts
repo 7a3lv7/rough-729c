@@ -1,10 +1,6 @@
 export default {
   async fetch(request, env) {
-    console.log(request);
-    
-    const inputs = {
-      prompt: "cyberpunk cat",
-    };
+    const inputs = await request.json() as AiTextToImageInput;
 
     const response = await env.AI.run(
       "@cf/stabilityai/stable-diffusion-xl-base-1.0",
